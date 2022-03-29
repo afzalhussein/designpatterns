@@ -31,5 +31,28 @@ class Client {
     	SingleLazyInstance inst1 = SingleLazyInstance.getInstance();
         SingleLazyInstance inst2 = SingleLazyInstance.getInstance();
         System.out.println(inst2 == inst1);
+        
+        
+        SingleInstance inst3 = SingleInstance.getInstance();
+        SingleInstance inst4 = SingleInstance.getInstance();
+        
+        System.out.println(inst3 == inst4);
+        
+        LazyIODH inst5 = LazyIODH.getInstance();
+        LazyIODH inst6 = LazyIODH.getInstance();
+        
+        System.out.println(inst5==inst6);
+    }
+}
+
+class LazyIODH {
+	private LazyIODH(){}
+    
+    private static class LazyInstance {
+    	public static LazyIODH INSTANCE = new LazyIODH();
+    }
+    
+    public static LazyIODH getInstance(){
+    	return LazyInstance.INSTANCE;
     }
 }
