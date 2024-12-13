@@ -1,0 +1,58 @@
+class SingleInstance {
+	private SingleInstance(){}
+    private static final SingleInstance INSTANCE = new SingleInstance();
+    
+    public static SingleInstance getInstance() {
+    	return INSTANCE;
+    }
+}
+
+
+class SingleLazyInstance {
+	private SingleLazyInstance() {}
+    
+    private static volatile SingleLazyInstance INSTANCE;
+    
+    public static SingleLazyInstance getInstance() {
+    	if(INSTANCE==null) {
+        	synchronized(SingleLazyInstance.class) {
+            	if(INSTANCE == null) {
+                	INSTANCE = new SingleLazyInstance();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+}
+
+
+class Client {
+	public static void main(String args[]) {
+    	SingleLazyInstance inst1 = SingleLazyInstance.getInstance();
+        SingleLazyInstance inst2 = SingleLazyInstance.getInstance();
+        System.out.println(inst2 == inst1);
+        
+        
+        SingleInstance inst3 = SingleInstance.getInstance();
+        SingleInstance inst4 = SingleInstance.getInstance();
+        
+        System.out.println(inst3 == inst4);
+        
+        LazyIODH inst5 = LazyIODH.getInstance();
+        LazyIODH inst6 = LazyIODH.getInstance();
+        
+        System.out.println(inst5==inst6);
+    }
+}
+
+class LazyIODH {
+	private LazyIODH(){}
+    
+    private static class LazyInstance {
+    	public static LazyIODH INSTANCE = new LazyIODH();
+    }
+    
+    public static LazyIODH getInstance(){
+    	return LazyInstance.INSTANCE;
+    }
+}
