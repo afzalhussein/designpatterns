@@ -1,0 +1,73 @@
+public class Main {
+	public static void main(String args[]) {
+    	System.out.println("This is it!");
+        Instance ec2 = new EC2InstanceResourceFactory();
+        Instance google = new GoogleInstanceResourceFactory();
+        ec2.start();
+        ec2.stop();
+        ec2.attachStorage(new S3StorageResourceFactory());
+        
+        google.start();
+        google.stop();
+        google.attachStorage(new GoogleStorageResourceFactory());
+    }
+}
+
+// Abstract products
+interface Instance {
+	enum Capacity { micro, medium, large };
+    
+	void start();
+    
+    void stop();
+    
+    void attachStorage(Storage storage);
+}
+
+interface Storage {
+	String getId();
+}
+
+// Concrete implementation
+class EC2InstanceResourceFactory implements Instance {
+	
+    @Override
+    public void start(){
+    	System.out.println("Started EC2");
+    }
+    @Override
+    public void stop(){
+    	System.out.println("Stopped EC2");
+    }
+    @Override
+    public void attachStorage(Storage storage){
+    	System.out.println(storage.getId());
+    }
+}
+class S3StorageResourceFactory implements Storage{
+	@Override
+    public String getId(){
+    	return "S3";
+    }
+}
+
+class GoogleInstanceResourceFactory implements Instance{
+	@Override
+    public void start(){
+    	System.out.println("Google started");
+    }
+    @Override
+    public void stop(){
+    	System.out.println("Google stopped");
+    }
+    @Override
+    public void attachStorage(Storage storage){
+    	System.out.println(storage.getId());
+    }
+}
+class GoogleStorageResourceFactory implements Storage{
+	@Override
+    public String getId(){
+    	return "Google";
+    }
+}
